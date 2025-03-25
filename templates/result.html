@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Audio Steganography - Extracted Message{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h2 class="text-center"><i class="fas fa-unlock-alt me-2"></i>Message Successfully Extracted</h2>
+            </div>
+            <div class="card-body">
+                <h3 class="text-center mb-4">Hidden Message Contents</h3>
+                
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="message-content p-3 bg-light rounded">
+                            <pre id="message-text" class="mb-0" style="white-space: pre-wrap; font-family: inherit;">{{ message }}</pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 col-md-8 mx-auto">
+                    <button id="copy-btn" class="btn btn-primary mb-3" onclick="copyMessage()">
+                        <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                    </button>
+                    <a href="{{ url_for('decrypt') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-redo me-2"></i>Extract Another Message
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function copyMessage() {
+        var messageText = document.getElementById('message-text').innerText;
+        navigator.clipboard.writeText(messageText).then(function() {
+            // Change button text temporarily
+            var button = document.getElementById('copy-btn');
+            var originalHtml = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-success');
+            
+            // Revert button after 2 seconds
+            setTimeout(function() {
+                button.innerHTML = originalHtml;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+            }, 2000);
+        });
+    }
+</script>
+{% endblock %}

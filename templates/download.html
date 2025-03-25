@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Audio Steganography - Download{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h2 class="text-center"><i class="fas fa-check-circle me-2"></i>Message Successfully Hidden</h2>
+            </div>
+            <div class="card-body text-center">
+                <div class="my-4">
+                    <i class="fas fa-music fa-5x text-success"></i>
+                </div>
+                <h3>Your audio file with hidden message is ready!</h3>
+                <p class="mb-4">Click the button below to download your file.</p>
+
+                <div class="d-grid gap-2 col-md-8 mx-auto">
+                    <a href="{{ url_for('download', filename=filename) }}" class="btn btn-success btn-lg mb-3">
+                        <i class="fas fa-download me-2"></i>Download Audio File
+                    </a>
+                    <a href="{{ url_for('encrypt') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-redo me-2"></i>Hide Another Message
+                    </a>
+                </div>
+
+                <div class="alert alert-warning mt-4">
+                    <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h5>
+                    <p>To extract the hidden message, you'll need to:</p>
+                    <ol class="text-start">
+                        <li>Keep the audio file in WAV format (do not convert to MP3/AAC)</li>
+                        <li>Use the "Decrypt" feature of this application</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

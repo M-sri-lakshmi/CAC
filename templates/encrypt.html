@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Audio Steganography - Encrypt{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center"><i class="fas fa-lock me-2"></i>Hide Your Secret Message</h2>
+            </div>
+            <div class="card-body">
+                <form id="encryptForm" action="{{ url_for('encrypt') }}" method="post" onsubmit="showLoading()">
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Your Secret Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        <div class="form-text">
+                            Maximum length: ~600 characters (for 10 second audio)
+                            <span class="ms-2 info-icon" data-bs-toggle="tooltip" title="Longer messages require longer audio files and may affect quality">
+                                <i class="fas fa-info-circle"></i>
+                            </span>
+                        </div>
+                        <div id="charCount" class="form-text text-end">0 characters</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-music me-2"></i>Generate Audio with Hidden Message
+                        </button>
+                    </div>
+                </form>
+
+                <div id="loading" class="loading mt-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3">Generating your audio file with hidden message...</p>
+                    <p class="text-muted">This may take a few moments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+
+    // Character counter
+    document.getElementById('message').addEventListener('input', function() {
+        var charCount = this.value.length;
+        document.getElementById('charCount').textContent = charCount + ' characters';
+
+        // Change color if approaching limit
+        if (charCount > 500) {
+            document.getElementById('charCount').className = 'form-text text-end text-danger';
+        } else if (charCount > 400) {
+            document.getElementById('charCount').className = 'form-text text-end text-warning';
+        } else {
+            document.getElementById('charCount').className = 'form-text text-end';
+        }
+    });
+
+    // Show loading animation
+    function showLoading() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('encryptForm').style.display = 'none';
+    }
+</script>
+{% endblock %}
